@@ -1,1 +1,0 @@
-// Тестовые данные для страницы login (https://www.saucedemo.com/)
