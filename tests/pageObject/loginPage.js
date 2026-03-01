@@ -5,24 +5,23 @@ class LoginPage {
 
     constructor(page) {
         this.page = page;
-    }
-    
-    getLocatorUsernameField = () => this.page.locator('[data-test="username"]');
-    getLocatorPasswordField = () => this.page.locator('[data-test="password"]');
-    getLocatorLoginButton = () => this.page.locator('[data-test="login-button"]');
 
-    getLocatorH3ErrorMessage = () => this.page.locator('[data-test="error"]');
+        this.usernameField = page.locator('[data-test="username"]');
+        this.passwordField = page.locator('[data-test="password"]');
+        this.loginButton = page.locator('[data-test="login-button"]');
+        this.errorMessage = page.locator('[data-test="error"]');
+    }
 
     async fillUsername(username) {
-        await this.getLocatorUsernameField().fill(username);
+        await this.usernameField.fill(username);
     }
 
     async fillPassword(password) {
-        await this.getLocatorPasswordField().fill(password);
+        await this.passwordField.fill(password);
     }
 
     async clickLoginButton() {
-        await this.getLocatorLoginButton().click();
+        await this.loginButton.click();
     }
 
     /**
