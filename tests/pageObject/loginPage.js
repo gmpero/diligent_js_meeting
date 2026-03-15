@@ -1,3 +1,5 @@
+import { InventoryPage } from './inventoryPage';
+
 class LoginPage {
     /**
 	 * @param {import('playwright').Page} page 
@@ -6,10 +8,10 @@ class LoginPage {
     constructor(page) {
         this.page = page;
 
-        this.usernameField = page.locator('[data-test="username"]');
-        this.passwordField = page.locator('[data-test="password"]');
-        this.loginButton = page.locator('[data-test="login-button"]');
-        this.errorMessage = page.locator('[data-test="error"]');
+        this.usernameField = page.getByTestId('username');
+        this.passwordField = page.getByTestId('password');
+        this.loginButton = page.getByTestId('login-button');
+        this.errorMessage = page.getByTestId('error');
     }
 
     async fillUsername(username) {
@@ -34,7 +36,10 @@ class LoginPage {
      *                                 поле логина останется незаполненным.
      * @param {string} [password=''] - Пароль пользователя. Если передана пустая строка,
      *                                 поле пароля останется незаполненным.
-     * @returns {Promise<void>}
+     * 
+     * @returns {Promise<LoginPage|InventoryPage>} Возвращает:
+     * - {LoginPage} - если вход не удался (появляется сообщение об ошибке)
+     * - {InventoryPage} - если вход выполнен успешно
      * 
      * @example
      * // Полный логин
@@ -55,15 +60,12 @@ class LoginPage {
      * @throws {Error} Если произошла ошибка при заполнении полей или отправке формы
      */
     async submitFormLogin(username = '', password = '') {
-        if(username !== '') {
-            await this.fillUsername(username);
-        }
-        
-        if(password !== '') {
-            await this.fillPassword(password);
-        }
-        
+        await this.fillUsername(username);
+        await this.fillPassword(password);
         await this.clickLoginButton();
+
+        const hasError = await this.errorMessage.isVisible();
+        return hasError ? this : new InventoryPage(this.page);
     }
 }
 
