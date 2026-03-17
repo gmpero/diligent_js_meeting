@@ -12,6 +12,7 @@ class LoginPage {
         this.passwordField = page.getByTestId('password');
         this.loginButton = page.getByTestId('login-button');
         this.errorMessage = page.getByTestId('error');
+        this.errorCloseButton = page.getByTestId('error-button');
     }
 
     async fillUsername(username) {
