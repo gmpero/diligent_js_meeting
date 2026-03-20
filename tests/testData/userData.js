@@ -1,5 +1,5 @@
 const UserData = {
-    standard_user : {
+    standard_user: {
         username: "standard_user",
         password: "secret_sauce",
     },
@@ -7,7 +7,12 @@ const UserData = {
     invalid_user: {
         username: "invalid_user",
         password: "invalid_password",
-    }
+    },
+
+    problem_user: {
+        username: "problem_user",
+        password: "secret_sauce",
+    },
 }
 
-export {UserData};
+export { UserData };
