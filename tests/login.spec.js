@@ -72,6 +72,6 @@ test.describe("TC_01 | Authorization under different users", () => {
         await expect(loginPage.errorMessage).toBeVisible();
         await expect(loginPage.errorMessage).toHaveText(LoginPageData.errorNotifications.invalidCredentials);
         await expect(loginPage.errorCloseButton).toBeVisible();
-        await expect(page).toHaveURL('https://www.saucedemo.com/');
+        await expect(page).toHaveURL('/');
     });
 });
