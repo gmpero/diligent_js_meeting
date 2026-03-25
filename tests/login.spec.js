@@ -119,4 +119,18 @@ test.describe("TC_01 | Authorization under different users", () => {
         await expect(loginPage.errorCloseButton).toBeVisible();
         await expect(page).toHaveURL("/");
     });
+
+    test("TC_01.008 | Error Message Dismissal", async ({ page }) => {
+        await loginPage.submitFormLogin(UserData.invalid_user.username, UserData.invalid_user.password);
+
+        await expect(loginPage.errorMessage).toHaveText(
+            LoginPageData.errorNotifications.invalidCredentials
+        );
+        await loginPage.closeErrorMessage();
+        await expect(loginPage.errorMessage).not.toBeVisible();
+        await expect(loginPage.usernameField && loginPage.passwordField).toBeVisible();
+
+        const inventoryPage = await loginPage.submitFormLogin(UserData.standard_user.username, UserData.standard_user.password);
+        await expect(inventoryPage.title).toHaveText(InventoryPageData.TITLE);
+    });
 });

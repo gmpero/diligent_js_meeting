@@ -2,8 +2,8 @@ import { InventoryPage } from './inventoryPage';
 
 class LoginPage {
     /**
-	 * @param {import('playwright').Page} page 
-	 */
+     * @param {import('playwright').Page} page 
+     */
 
     constructor(page) {
         this.page = page;
@@ -25,6 +25,10 @@ class LoginPage {
 
     async clickLoginButton() {
         await this.loginButton.click();
+    }
+
+    async closeErrorMessage() {
+        await this.errorCloseButton.click();
     }
 
     /**
@@ -70,4 +74,4 @@ class LoginPage {
     }
 }
 
-export {LoginPage};
+export { LoginPage };
