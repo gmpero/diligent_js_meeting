@@ -1,13 +1,17 @@
+import { Header } from "./components/header";
+
 class InventoryPage {
     /**
-	 * @param {import('playwright').Page} page 
-	 */
+     * @param {import('playwright').Page} page
+     */
 
-	constructor(page) {
+    constructor(page) {
         this.page = page;
-		this.productCards = page.getByTestId('inventory-item');
-	}
-
+        this.header = new Header(page);
+        this.title = page.getByTestId("title");
+        this.productCards = page.getByTestId("inventory-item");
+        this.mainContent = page.getByTestId("inventory-container");
+    }
 }
 
-export {InventoryPage}
+export { InventoryPage };
