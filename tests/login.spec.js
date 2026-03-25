@@ -1,14 +1,16 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from './pageObject/loginPage';
-import { UserData } from './testData/userData';
-import { LoginPageData } from './testData/loginPageData';
-import { InventoryPageData } from './testData/inventoryPageData';
+import { test, expect } from "@playwright/test";
+import { LoginPage } from "./pageObject/loginPage";
+import { UserData } from "./testData/userData";
+import { LoginPageData } from "./testData/loginPageData";
+import { InventoryPageData } from "./testData/inventoryPageData";
 
 test.describe("TC_01 | Authorization under different users", () => {
     /** @type {LoginPage} */
     let loginPage;
+
     test.beforeEach(async ({ page }) => {
-        await page.goto('/');
+        await page.goto("/");
+
         loginPage = new LoginPage(page);
     });
 
@@ -17,60 +19,104 @@ test.describe("TC_01 | Authorization under different users", () => {
         await expect(loginPage.passwordField).toBeVisible();
         await expect(loginPage.loginButton).toBeVisible();
 
-        await expect(loginPage.usernameField).toHaveAttribute('placeholder', 'Username');
-        await expect(loginPage.passwordField).toHaveAttribute('placeholder', 'Password')
+        await expect(loginPage.usernameField).toHaveAttribute(
+            "placeholder",
+            "Username",
+        );
+        await expect(loginPage.passwordField).toHaveAttribute(
+            "placeholder",
+            "Password",
+        );
     });
 
     test("TC_01.001.02 | Login form accepts input correctly", async () => {
         await loginPage.fillUsername(UserData.standard_user.username);
         await loginPage.fillPassword(UserData.standard_user.password);
 
-        await expect(loginPage.usernameField).toHaveValue(UserData.standard_user.username);
-        await expect(loginPage.passwordField).toHaveValue(UserData.standard_user.password);
+        await expect(loginPage.usernameField).toHaveValue(
+            UserData.standard_user.username,
+        );
+        await expect(loginPage.passwordField).toHaveValue(
+            UserData.standard_user.password,
+        );
     });
 
     test("TC_01.001.03 | Password field masks entered text", async () => {
         await loginPage.fillPassword(UserData.standard_user.password);
 
-        await expect(loginPage.passwordField).toHaveAttribute('type', 'password');
+        await expect(loginPage.passwordField).toHaveAttribute(
+            "type",
+            "password",
+        );
     });
 
-    test("TC_01.001.04 | Authorization under a standard user", async ({ page }) => {
-        await loginPage.submitFormLogin(UserData.standard_user.username, UserData.standard_user.password);
+    test("TC_01.001.04 | Authorization under a standard user", async ({
+        page,
+    }) => {
+        await loginPage.submitFormLogin(
+            UserData.standard_user.username,
+            UserData.standard_user.password,
+        );
 
         await expect(page).toHaveURL(InventoryPageData.URL);
     });
 
     test("TC_01.001.05 | Product inventory is displayed after successful login", async () => {
-        const inventoryPage = await loginPage.submitFormLogin(UserData.standard_user.username, UserData.standard_user.password);
+        const inventoryPage = await loginPage.submitFormLogin(
+            UserData.standard_user.username,
+            UserData.standard_user.password,
+        );
         const allCards = await inventoryPage.productCards.all();
 
-        await expect(inventoryPage.productCards).toHaveCount(InventoryPageData.PRODUCTS_COUNT);
+        await expect(inventoryPage.productCards).toHaveCount(
+            InventoryPageData.PRODUCTS_COUNT,
+        );
         for (const card of allCards) {
             await expect(card).toBeVisible();
         }
-
     });
 
     test("TC_01.001.06 | No error message appears after successful login", async () => {
-        await loginPage.submitFormLogin(UserData.standard_user.username, UserData.standard_user.password);
+        await loginPage.submitFormLogin(
+            UserData.standard_user.username,
+            UserData.standard_user.password,
+        );
 
         await expect(loginPage.errorMessage).not.toBeVisible();
     });
 
     test("TC_01.002 | Invalid Username Login Attempt", async ({ page }) => {
-        await loginPage.submitFormLogin(UserData.invalid_user.username, UserData.standard_user.password);
+        await loginPage.submitFormLogin(
+            UserData.invalid_user.username,
+            UserData.standard_user.password,
+        );
 
         await expect(loginPage.errorMessage).toBeVisible();
-        await expect(loginPage.errorMessage).toHaveText(LoginPageData.errorNotifications.invalidCredentials);
+        await expect(loginPage.errorMessage).toHaveText(
+            LoginPageData.errorNotifications.invalidCredentials,
+        );
         await expect(loginPage.errorCloseButton).toBeVisible();
-        await expect(page).toHaveURL('/');
+        await expect(page).toHaveURL("/");
     });
 
     test("TC_01.004 | Successful Login Problem User", async ({ page }) => {
-        await loginPage.submitFormLogin(UserData.problem_user.username, UserData.problem_user.password);
+        await loginPage.submitFormLogin(
+            UserData.problem_user.username,
+            UserData.problem_user.password,
+        );
 
         await expect(page).toHaveURL(InventoryPageData.URL);
         await expect(loginPage.errorMessage).not.toBeVisible();
+    });
+
+    test("TC_01.005 | Empty Username Validation", async ({ page }) => {
+        await loginPage.submitFormLogin("", UserData.standard_user.password);
+
+        await expect(loginPage.errorMessage).toHaveText(
+            LoginPageData.errorNotifications.missingUsername,
+        );
+        await expect(loginPage.usernameField).toHaveClass(/error/);
+        await expect(loginPage.errorCloseButton).toBeVisible();
+        await expect(page).toHaveURL("/");
     });
 });
