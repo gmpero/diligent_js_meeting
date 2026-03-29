@@ -120,8 +120,19 @@ test.describe("TC_01 | Authorization under different users", () => {
         await expect(page).toHaveURL("/");
     });
 
+    test("TC_01.006 | Empty Password Validation", async ({ page }) => {
+        await loginPage.submitFormLogin(UserData.standard_user.username, "");
+
+        await expect(loginPage.errorMessage).toHaveText(
+            LoginPageData.errorNotifications.missingPassword,
+        );
+        await expect(loginPage.passwordField).toHaveClass(/error/);
+        await expect(loginPage.errorCloseButton).toBeVisible();
+        await expect(page).toHaveURL("/");
+    });
+
     test("TC_01.008 | Error Message Dismissal", async ({ page }) => {
-        await loginPage.submitFormLogin(UserData.invalid_user.username, UserData.invalid_user.password) as InventoryPage;
+        await loginPage.submitFormLogin(UserData.invalid_user.username, UserData.invalid_user.password);
 
         await expect(loginPage.errorMessage).toHaveText(
             LoginPageData.errorNotifications.invalidCredentials
@@ -130,7 +141,7 @@ test.describe("TC_01 | Authorization under different users", () => {
         await expect(loginPage.errorMessage).not.toBeVisible();
         await expect(loginPage.usernameField && loginPage.passwordField).toBeVisible();
 
-        const inventoryPage = await loginPage.submitFormLogin(UserData.standard_user.username, UserData.standard_user.password);
+        const inventoryPage = await loginPage.submitFormLogin(UserData.standard_user.username, UserData.standard_user.password) as InventoryPage;
         await expect(inventoryPage.title).toHaveText(InventoryPageData.TITLE);
     });
 });
