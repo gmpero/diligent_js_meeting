@@ -19,19 +19,19 @@ class LoginPage {
         this.errorCloseButton = page.getByTestId('error-button');
     }
 
-    async fillUsername(username: string): Promise<void> {
+    async fillUsername(username: string) {
         await this.usernameField.fill(username);
     }
 
-    async fillPassword(password: string): Promise<void> {
+    async fillPassword(password: string) {
         await this.passwordField.fill(password);
     }
 
-    async clickLoginButton(): Promise<void> {
+    async clickLoginButton() {
         await this.loginButton.click();
     }
 
-    async closeErrorMessage(): Promise<void> {
+    async closeErrorMessage() {
         await this.errorCloseButton.click();
     }
 

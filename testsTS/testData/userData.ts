@@ -8,7 +8,7 @@ interface IUserData {
     [key: string]: IUser,
 }
 
-const UserData = {
+const UserData: IUserData = {
     standard_user: {
         username: "standard_user",
         password: "secret_sauce",
