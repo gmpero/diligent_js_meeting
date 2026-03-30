@@ -10,7 +10,6 @@ test.describe("TC_01 | Authorization under different users", () => {
 
     test.beforeEach(async ({ page }) => {
         await page.goto("/");
-
         loginPage = new LoginPage(page);
     });
 
@@ -53,7 +52,7 @@ test.describe("TC_01 | Authorization under different users", () => {
     test("TC_01.001.04 | Authorization under a standard user", async ({
         page,
     }) => {
-        await loginPage.submitFormLogin(
+        await loginPage.loginSuccess(
             UserData.standard_user.username,
             UserData.standard_user.password,
         );
@@ -62,10 +61,10 @@ test.describe("TC_01 | Authorization under different users", () => {
     });
 
     test("TC_01.001.05 | Product inventory is displayed after successful login", async () => {
-        const inventoryPage  = await loginPage.submitFormLogin(
+        const inventoryPage  = await loginPage.loginSuccess(
             UserData.standard_user.username,
             UserData.standard_user.password,
-        ) as InventoryPage;
+        );
         const allCards = await inventoryPage.productCards.all();
 
         await expect(inventoryPage.productCards).toHaveCount(
@@ -77,7 +76,7 @@ test.describe("TC_01 | Authorization under different users", () => {
     });
 
     test("TC_01.001.06 | No error message appears after successful login", async () => {
-        await loginPage.submitFormLogin(
+        await loginPage.loginSuccess(
             UserData.standard_user.username,
             UserData.standard_user.password,
         );
@@ -86,7 +85,7 @@ test.describe("TC_01 | Authorization under different users", () => {
     });
 
     test("TC_01.002 | Invalid Username Login Attempt", async ({ page }) => {
-        await loginPage.submitFormLogin(
+        await loginPage.loginFail(
             UserData.invalid_user.username,
             UserData.standard_user.password,
         );
@@ -100,7 +99,7 @@ test.describe("TC_01 | Authorization under different users", () => {
     });
 
     test("TC_01.004 | Successful Login Problem User", async ({ page }) => {
-        await loginPage.submitFormLogin(
+        await loginPage.loginSuccess(
             UserData.problem_user.username,
             UserData.problem_user.password,
         );
@@ -110,7 +109,7 @@ test.describe("TC_01 | Authorization under different users", () => {
     });
 
     test("TC_01.005 | Empty Username Validation", async ({ page }) => {
-        await loginPage.submitFormLogin("", UserData.standard_user.password);
+        await loginPage.loginFail("", UserData.standard_user.password);
 
         await expect(loginPage.errorMessage).toHaveText(
             LoginPageData.errorNotifications.missingUsername,
@@ -121,7 +120,7 @@ test.describe("TC_01 | Authorization under different users", () => {
     });
 
     test("TC_01.006 | Empty Password Validation", async ({ page }) => {
-        await loginPage.submitFormLogin(UserData.standard_user.username, "");
+        await loginPage.loginFail(UserData.standard_user.username, "");
 
         await expect(loginPage.errorMessage).toHaveText(
             LoginPageData.errorNotifications.missingPassword,
@@ -132,7 +131,7 @@ test.describe("TC_01 | Authorization under different users", () => {
     });
 
     test("TC_01.008 | Error Message Dismissal", async ({ page }) => {
-        await loginPage.submitFormLogin(UserData.invalid_user.username, UserData.invalid_user.password);
+        await loginPage.loginFail(UserData.invalid_user.username, UserData.invalid_user.password);
 
         await expect(loginPage.errorMessage).toHaveText(
             LoginPageData.errorNotifications.invalidCredentials
@@ -141,7 +140,7 @@ test.describe("TC_01 | Authorization under different users", () => {
         await expect(loginPage.errorMessage).not.toBeVisible();
         await expect(loginPage.usernameField && loginPage.passwordField).toBeVisible();
 
-        const inventoryPage = await loginPage.submitFormLogin(UserData.standard_user.username, UserData.standard_user.password) as InventoryPage;
+        const inventoryPage = await loginPage.loginSuccess(UserData.standard_user.username, UserData.standard_user.password);
         await expect(inventoryPage.title).toHaveText(InventoryPageData.TITLE);
     });
 });
