@@ -13,10 +13,10 @@ test.describe("TC_03 | Menu Functionality / Product Catalog", () => {
         await page.goto("/");
 
         loginPage = new LoginPage(page);
-        inventoryPage = await loginPage.submitFormLogin(
+        inventoryPage = await loginPage.loginSuccess(
             UserData.standard_user.username,
             UserData.standard_user.password,
-        ) as InventoryPage;
+        );
     });
 
     test("TC_03.001.01 | Page title is displayed correctly", async ({page}) => {
