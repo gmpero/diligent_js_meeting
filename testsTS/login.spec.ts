@@ -61,7 +61,7 @@ test.describe("TC_01 | Authorization under different users", () => {
     });
 
     test("TC_01.001.05 | Product inventory is displayed after successful login", async () => {
-        const inventoryPage  = await loginPage.loginSuccess(
+        const inventoryPage = await loginPage.loginSuccess(
             UserData.standard_user.username,
             UserData.standard_user.password,
         );
@@ -130,7 +130,7 @@ test.describe("TC_01 | Authorization under different users", () => {
         await expect(page).toHaveURL("/");
     });
 
-    test("TC_01.008 | Error Message Dismissal", async ({ page }) => {
+    test("TC_01.008 | Error Message Dismissal", async () => {
         await loginPage.loginFail(UserData.invalid_user.username, UserData.invalid_user.password);
 
         await expect(loginPage.errorMessage).toHaveText(
@@ -143,4 +143,15 @@ test.describe("TC_01 | Authorization under different users", () => {
         const inventoryPage = await loginPage.loginSuccess(UserData.standard_user.username, UserData.standard_user.password);
         await expect(inventoryPage.title).toHaveText(InventoryPageData.TITLE);
     });
+
+    test("TC_01.007 | Empty Credentials Validation", async ({ page }) => {
+        await expect(loginPage.usernameField).toBeVisible();
+        await expect(loginPage.passwordField).toBeVisible();
+        await loginPage.clickLoginButton();
+
+        await expect(loginPage.errorMessage).toHaveText(LoginPageData.errorNotifications.missingUsername);
+        await expect(page).toHaveURL("/");
+        const buttonDisabled = loginPage.loginButton.isDisabled();
+        expect(buttonDisabled).toBeTruthy();
+    })
 });
