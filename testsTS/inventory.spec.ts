@@ -44,8 +44,8 @@ test.describe("TC_03 | Menu Functionality / Product Catalog", () => {
             "aria-hidden",
             "false",
         );
-        await expect(inventoryPage.header.sidebarlinks).toHaveText(
-            InventoryPageData.MENU_ITEMS,
+        await expect(inventoryPage.header.sidebarLinks).toHaveText(
+            InventoryPageData.getMenuNames(),
         );
         await expect(inventoryPage.mainContent).toBeVisible();
 
@@ -54,5 +54,17 @@ test.describe("TC_03 | Menu Functionality / Product Catalog", () => {
             "aria-hidden",
             "true",
         );
+    });
+
+    test("TC_02.002 | About External Link Navigation", async ({page, context}) => {
+        await inventoryPage.header.openBurgerMenu();
+        
+        const [aboutPage] = await Promise.all([
+            context.waitForEvent('page'),
+            inventoryPage.header.openInNewTab(InventoryPageData.MENU.ABOUT.name),
+        ]);
+
+        await expect(aboutPage).toHaveURL(InventoryPageData.MENU.ABOUT.url);
+        await expect(page).toHaveURL(InventoryPageData.URL);
     });
 });
