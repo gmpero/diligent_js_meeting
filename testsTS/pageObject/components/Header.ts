@@ -5,14 +5,14 @@ class Header {
     readonly openMenuButton: Locator;
     readonly closeMenuButton: Locator;
     readonly sidebarMenu: Locator;
-    readonly sidebarlinks: Locator;
+    readonly sidebarLinks: Locator;
 
     constructor(page: Page) {
         this.page = page;
         this.openMenuButton = page.getByRole("button", { name: "Open Menu" });
         this.closeMenuButton = page.getByRole("button", { name: "Close Menu" });
         this.sidebarMenu = page.locator(".bm-menu-wrap");
-        this.sidebarlinks = page.locator(".bm-menu-wrap nav a");
+        this.sidebarLinks = page.locator(".bm-menu-wrap nav a");
     }
 
     async openBurgerMenu() {
@@ -21,6 +21,12 @@ class Header {
 
     async closeBurgerMenu() {
         await this.closeMenuButton.click();
+    }
+
+    async openInNewTab(menuText: string) {
+        const menuItem = this.sidebarLinks.filter({hasText: menuText});
+        await menuItem.waitFor({ state: 'visible' });
+        await menuItem.click({ button: 'middle' });
     }
 }
 
