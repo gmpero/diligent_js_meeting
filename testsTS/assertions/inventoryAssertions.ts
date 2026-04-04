@@ -27,7 +27,7 @@ class InventoryAssertions {
         for (let i = 0; i < allCards.length; i++) {
             const card = allCards[i];
             const title = await inventoryPage.getProductTitle(card).textContent();
-            const expectProduct = expectProducts[i] // Передается InventoryPageData.PRODUCTS или отсортированный массив
+            const expectProduct = expectProducts[i];
             
             await test.step(`validate Data Product ${i + 1}: ${title}`, async () => {
                 await expect(inventoryPage.getProductTitle(card)).toHaveText(expectProduct.title);
