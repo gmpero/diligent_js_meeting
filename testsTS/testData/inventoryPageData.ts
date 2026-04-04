@@ -1,3 +1,12 @@
+type Product = {
+    id: number,
+    title: string,
+    description: string,
+    price: string,
+    imageAlt: string,
+    imageSrc: string,
+}
+
 const InventoryPageData = {
     URL: '/inventory.html',
     TITLE: 'Products',
@@ -52,7 +61,7 @@ const InventoryPageData = {
             imageAlt: 'Test.allTheThings() T-Shirt (Red)',
             imageSrc: '/static/media/red-tatt-1200x1500.30dadef477804e54fc7b.jpg',
         },
-    ],
+    ] as Product[],
 
     BUTTON_TEXT : {
         ADD: 'Add to cart',
@@ -60,15 +69,32 @@ const InventoryPageData = {
     },
 
     MENU: {
-        "ALL_ITEMS" : {name: "All Items"},
-        "ABOUT" : {name: 'About', url: 'https://saucelabs.com/'},
-        "LOGOUT" : {name: "Logout"},
-        "RESET" : {name: "Reset App State"},
+        ALL_ITEMS : {name: 'All Items'},
+        ABOUT : {name: 'About', url: 'https://saucelabs.com/'},
+        LOGOUT : {name: 'Logout'},
+        RESET : {name: 'Reset App State'},
+    },
+
+    SELECT_SORT: {
+        lohi: 'Price (low to high)',
     },
 
     getMenuNames() {
         return Object.values(this.MENU).map(item => item.name);
+    },
+
+    getSortProduct(products: Product[], typeSort: string) {
+        const productsCopy = [...products];
+
+        switch (typeSort) {
+            case this.SELECT_SORT.lohi:
+                return productsCopy.sort((a, b) => 
+                    parseFloat(a.price.slice(1)) - parseFloat(b.price.slice(1))
+                );
+            default:
+                return productsCopy;
+        }
     }
 };
 
-export { InventoryPageData };
+export { InventoryPageData, type Product };

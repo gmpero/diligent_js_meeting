@@ -32,7 +32,7 @@ test.describe("TC_03 | Menu Functionality / Product Catalog", () => {
     });
 
     test("TC_03.001.04 | Product Catalog Validate Data", async ({page}) => {
-        await InventoryAssertions.validateProductCardsData(inventoryPage);
+        await InventoryAssertions.validateProductCardsData(inventoryPage, InventoryPageData.PRODUCTS);
     });
 
     test("TC_02.001 | Hamburger Menu Open and Close", async () => {
@@ -66,5 +66,11 @@ test.describe("TC_03 | Menu Functionality / Product Catalog", () => {
 
         await expect(aboutPage).toHaveURL(InventoryPageData.MENU.ABOUT.url);
         await expect(page).toHaveURL(InventoryPageData.URL);
+    });
+
+    test("TC_03.002 | Sort Products by Price Low to High", async ({}) => {
+        await inventoryPage.selectSortDropdown(InventoryPageData.SELECT_SORT.lohi);
+        await InventoryAssertions.validateProductCardsData(inventoryPage, InventoryPageData.getSortProduct(InventoryPageData.PRODUCTS, InventoryPageData.SELECT_SORT.lohi));
+        await InventoryAssertions.validateAllProductCards(inventoryPage);
     });
 });

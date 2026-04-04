@@ -1,5 +1,5 @@
 import { Page, Locator } from '@playwright/test';
-import { Header } from "./components/Header";
+import { Header } from './components/Header';
 
 class InventoryPage {
     readonly page: Page;
@@ -7,13 +7,15 @@ class InventoryPage {
     readonly title: Locator;
     readonly productCards: Locator;
     readonly mainContent: Locator;
+	readonly select: Locator;
 
     constructor(page: Page) {
         this.header = new Header(page);
         this.page = page;
 		this.title = page.getByTestId('title');
 		this.productCards = page.getByTestId('inventory-item');
-        this.mainContent = page.getByTestId("inventory-container");
+        this.mainContent = page.getByTestId('inventory-container');
+		this.select = page.getByTestId('product-sort-container');
     
 	}
 
@@ -36,7 +38,10 @@ class InventoryPage {
 	getProductImage(card: Locator) {
 		return card.locator('img.inventory_item_img');
 	}
-        
+
+	async selectSortDropdown(option: string ) {
+		await this.select.selectOption({ label: option });
+	}   
 }
 
 export { InventoryPage };
