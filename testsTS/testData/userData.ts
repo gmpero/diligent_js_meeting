@@ -23,6 +23,11 @@ const UserData: IUserData = {
         username: "problem_user",
         password: "secret_sauce",
     },
+
+    error_user: {
+        username: "error_user",
+        password: "secret_sauce",
+    },
 }
 
 export { UserData };

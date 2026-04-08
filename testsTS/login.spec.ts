@@ -165,6 +165,14 @@ test.describe("TC_01 | Authorization under different users", () => {
         expect(buttonDisabled).toBeTruthy();
     });
 
+    test("TC_01.011 | Error User Login", async ({ page }) => {
+        loginPage.loginSuccess(
+            UserData.error_user.username,
+            UserData.error_user.password
+        );
+        await expect(page).toHaveURL(InventoryPageData.URL);
+    });
+
     test("TC_01.014 | Direct URL Access Protection", async ({ page }) => {
         await page.goto(InventoryPageData.URL);
 
@@ -174,4 +182,5 @@ test.describe("TC_01 | Authorization under different users", () => {
             LoginPageData.errorNotifications.accessDenied,
         );
     });
+
 });
