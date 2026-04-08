@@ -131,16 +131,24 @@ test.describe("TC_01 | Authorization under different users", () => {
     });
 
     test("TC_01.008 | Error Message Dismissal", async () => {
-        await loginPage.loginFail(UserData.invalid_user.username, UserData.invalid_user.password);
+        await loginPage.loginFail(
+            UserData.invalid_user.username,
+            UserData.invalid_user.password,
+        );
 
         await expect(loginPage.errorMessage).toHaveText(
-            LoginPageData.errorNotifications.invalidCredentials
+            LoginPageData.errorNotifications.invalidCredentials,
         );
         await loginPage.closeErrorMessage();
         await expect(loginPage.errorMessage).not.toBeVisible();
-        await expect(loginPage.usernameField && loginPage.passwordField).toBeVisible();
+        await expect(
+            loginPage.usernameField && loginPage.passwordField,
+        ).toBeVisible();
 
-        const inventoryPage = await loginPage.loginSuccess(UserData.standard_user.username, UserData.standard_user.password);
+        const inventoryPage = await loginPage.loginSuccess(
+            UserData.standard_user.username,
+            UserData.standard_user.password,
+        );
         await expect(inventoryPage.title).toHaveText(InventoryPageData.TITLE);
     });
 
@@ -149,9 +157,21 @@ test.describe("TC_01 | Authorization under different users", () => {
         await expect(loginPage.passwordField).toBeVisible();
         await loginPage.clickLoginButton();
 
-        await expect(loginPage.errorMessage).toHaveText(LoginPageData.errorNotifications.missingUsername);
+        await expect(loginPage.errorMessage).toHaveText(
+            LoginPageData.errorNotifications.missingUsername,
+        );
         await expect(page).toHaveURL("/");
         const buttonDisabled = loginPage.loginButton.isDisabled();
         expect(buttonDisabled).toBeTruthy();
-    })
+    });
+
+    test("TC_01.014 | Direct URL Access Protection", async ({ page }) => {
+        await page.goto(InventoryPageData.URL);
+
+        await expect(page).toHaveURL("/");
+        await expect(loginPage.errorMessage).toBeVisible();
+        await expect(loginPage.errorMessage).toHaveText(
+            LoginPageData.errorNotifications.accessDenied,
+        );
+    });
 });
