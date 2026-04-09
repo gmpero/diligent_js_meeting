@@ -97,6 +97,20 @@ test.describe("TC_01 | Authorization under different users", () => {
         await expect(loginPage.errorCloseButton).toBeVisible();
         await expect(page).toHaveURL("/");
     });
+    
+    test("TC_01.003 | Locked Out User Access", async ({ page }) => {
+        await loginPage.loginFail(
+            UserData.locked_out_user.username,
+            UserData.standard_user.password,
+        );
+
+        await expect(loginPage.errorMessage).toBeVisible();
+        await expect(loginPage.errorMessage).toHaveText(
+            LoginPageData.errorNotifications.lockedUser,
+        );
+        await expect(loginPage.errorCloseButton).toBeVisible();
+        await expect(page).toHaveURL("/");
+    });
 
     test("TC_01.004 | Successful Login Problem User", async ({ page }) => {
         await loginPage.loginSuccess(
