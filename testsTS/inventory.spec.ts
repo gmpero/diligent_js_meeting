@@ -73,4 +73,10 @@ test.describe("TC_03 | Menu Functionality / Product Catalog", () => {
         await InventoryAssertions.validateProductCardsData(inventoryPage, InventoryPageData.getSortProduct(InventoryPageData.PRODUCTS, InventoryPageData.SELECT_SORT.lohi));
         await InventoryAssertions.validateAllProductCards(inventoryPage);
     });
+
+    test("TC_03.003 | Sort Products by Name A to Z", async ({}) => {
+        await inventoryPage.selectSortDropdown(InventoryPageData.SELECT_SORT.az);
+        await InventoryAssertions.validateProductCardsData(inventoryPage, InventoryPageData.getSortProduct(InventoryPageData.PRODUCTS, InventoryPageData.SELECT_SORT.az));
+        await InventoryAssertions.validateAllProductCards(inventoryPage);
+    });
 });
