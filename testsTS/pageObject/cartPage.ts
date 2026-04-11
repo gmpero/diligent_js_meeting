@@ -21,10 +21,6 @@ class CartPage {
         this.checkoutButton = page.getByTestId('checkout');        
         this.cartItem = page.getByTestId('inventory-item');
 	}	
-
-    getPageTitleText(element: Locator) {
-		return element.getByTestId('title').textContent();
-	}
 }
 
 export { CartPage };
