@@ -8,6 +8,7 @@ class InventoryPage {
     readonly productCards: Locator;
     readonly mainContent: Locator;
 	readonly select: Locator;
+	readonly addToCartButton: Locator;
 
     constructor(page: Page) {
         this.header = new Header(page);
@@ -16,7 +17,7 @@ class InventoryPage {
 		this.productCards = page.getByTestId('inventory-item');
         this.mainContent = page.getByTestId('inventory-container');
 		this.select = page.getByTestId('product-sort-container');
-    
+		this.addToCartButton = page.locator('.btn_inventory');    
 	}
 
 	getProductTitle(card: Locator) {
@@ -41,7 +42,11 @@ class InventoryPage {
 
 	async selectSortDropdown(option: string ) {
 		await this.select.selectOption({ label: option });
-	}   
+	}  
+	
+	async clickAddToCartByIndex(index: number = 0) {
+    	await this.addToCartButton.nth(index).click();
+  }
 }
 
 export { InventoryPage };
