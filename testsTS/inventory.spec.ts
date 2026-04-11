@@ -73,4 +73,13 @@ test.describe("TC_03 | Menu Functionality / Product Catalog", () => {
         await InventoryAssertions.validateProductCardsData(inventoryPage, InventoryPageData.getSortProduct(InventoryPageData.PRODUCTS, InventoryPageData.SELECT_SORT.lohi));
         await InventoryAssertions.validateAllProductCards(inventoryPage);
     });
+
+    test("TC_05.001 | Add Single Item to Cart", async ({}) => {
+        const randomProductPosition = Math.ceil(Math.random() * 6);
+        const button = await inventoryPage.clickAddToCart(randomProductPosition);
+        
+        await expect(button).toHaveText(InventoryPageData.BUTTON_TEXT.REMOVE);
+        await InventoryAssertions.validateAllProductButton(inventoryPage, [randomProductPosition]);
+        await expect(inventoryPage.cartBadge).toHaveText('1');
+    });
 });
