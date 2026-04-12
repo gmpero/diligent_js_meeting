@@ -10,8 +10,8 @@ class InventoryPage {
     readonly productCards: Locator;
     readonly mainContent: Locator;
 	readonly select: Locator;
-	readonly addToCart: Locator;
 	readonly cartBadge: Locator;
+	readonly addToCartButton: Locator;
 
     constructor(page: Page) {
         this.header = new Header(page);
@@ -20,7 +20,7 @@ class InventoryPage {
 		this.productCards = page.getByTestId('inventory-item');
         this.mainContent = page.getByTestId('inventory-container');
 		this.select = page.getByTestId('product-sort-container');
-		this.addToCart = page.locator('button.btn_inventory');
+		this.addToCartButton = page.locator('button.btn_inventory');
 		this.cartBadge = page.getByTestId('shopping-cart-badge');
 	}
 
@@ -44,10 +44,10 @@ class InventoryPage {
 		return card.locator('img.inventory_item_img');
 	}
 
-	async clickAddToCart(position: number) {
+	async clickAddToCart(position: number = 1) {
 		const index = position - 1;
-		await this.addToCart.nth(index).click();
-		return this.addToCart.nth(index);
+		await this.addToCartButton.nth(index).click();
+		return this.addToCartButton.nth(index);
 	}
 
 	getButtonText(card: Locator) {
@@ -56,7 +56,8 @@ class InventoryPage {
 
 	async selectSortDropdown(option: string ) {
 		await this.select.selectOption({ label: option });
-	}   
+	}  
+
 }
 
 export { InventoryPage};

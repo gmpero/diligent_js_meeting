@@ -20,7 +20,7 @@ const InventoryPageData = {
             price: '$29.99',
             imageAlt: 'Sauce Labs Backpack',
             imageSrc: '/static/media/sauce-backpack-1200x1500.0a0b85a385945026062b.jpg',
-        }, 
+        },
         {
             id: 2,
             title: 'Sauce Labs Bike Light',
@@ -66,27 +66,22 @@ const InventoryPageData = {
     BUTTON_TEXT : {
         ADD: 'Add to cart',
         REMOVE: 'Remove',
-    },
-
-    MENU: {
-        ALL_ITEMS : {name: 'All Items'},
-        ABOUT : {name: 'About', url: 'https://saucelabs.com/'},
-        LOGOUT : {name: 'Logout'},
-        RESET : {name: 'Reset App State'},
-    },
+    },    
 
     SELECT_SORT: {
+        az: 'Name (A to Z)',
         lohi: 'Price (low to high)',
-    },
-
-    getMenuNames() {
-        return Object.values(this.MENU).map(item => item.name);
-    },
+    },   
 
     getSortProduct(products: Product[], typeSort: string) {
         const productsCopy = [...products];
 
         switch (typeSort) {
+            case this.SELECT_SORT.az:
+                return productsCopy.sort((a, b) =>
+                    a.title.localeCompare(b.title)
+                );
+
             case this.SELECT_SORT.lohi:
                 return productsCopy.sort((a, b) => 
                     parseFloat(a.price.slice(1)) - parseFloat(b.price.slice(1))
