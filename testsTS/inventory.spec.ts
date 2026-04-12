@@ -4,6 +4,7 @@ import { UserData } from './testData/userData';
 import { InventoryPageData } from './testData/inventoryPageData';
 import { InventoryAssertions } from './assertions/inventoryAssertions'
 import { InventoryPage } from './pageObject/inventoryPage';
+import { HeaderData } from './testData/headerData';
 
 test.describe("TC_03 | Menu Functionality / Product Catalog", () => {
     let loginPage: LoginPage;
@@ -19,19 +20,19 @@ test.describe("TC_03 | Menu Functionality / Product Catalog", () => {
         );
     });
 
-    test("TC_03.001.01 | Page title is displayed correctly", async ({page}) => {
+    test("TC_03.001.01 | Page title is displayed correctly", async () => {
         await expect(inventoryPage.title).toHaveText(InventoryPageData.TITLE);
     });
 
-    test("TC_03.001.02 | Correct number of products is displayed", async ({page}) => {
+    test("TC_03.001.02 | Correct number of products is displayed", async () => {
         await expect(inventoryPage.productCards).toHaveCount(InventoryPageData.PRODUCTS_COUNT);
     });
 
-    test("TC_03.001.03 | All product card elements are visible", async ({page}) => {
+    test("TC_03.001.03 | All product card elements are visible", async () => {
         await InventoryAssertions.validateAllProductCards(inventoryPage);
     });
 
-    test("TC_03.001.04 | Product Catalog Validate Data", async ({page}) => {
+    test("TC_03.001.04 | Product Catalog Validate Data", async () => {
         await InventoryAssertions.validateProductCardsData(inventoryPage, InventoryPageData.PRODUCTS);
     });
 
@@ -45,7 +46,7 @@ test.describe("TC_03 | Menu Functionality / Product Catalog", () => {
             "false",
         );
         await expect(inventoryPage.header.sidebarLinks).toHaveText(
-            InventoryPageData.getMenuNames(),
+            HeaderData.getMenuNames(),
         );
         await expect(inventoryPage.mainContent).toBeVisible();
 
@@ -61,14 +62,14 @@ test.describe("TC_03 | Menu Functionality / Product Catalog", () => {
         
         const [aboutPage] = await Promise.all([
             context.waitForEvent('page'),
-            inventoryPage.header.openInNewTab(InventoryPageData.MENU.ABOUT.name),
+            inventoryPage.header.openInNewTab(HeaderData.MENU.ABOUT.name),
         ]);
 
-        await expect(aboutPage).toHaveURL(InventoryPageData.MENU.ABOUT.url);
+        await expect(aboutPage).toHaveURL(HeaderData.MENU.ABOUT.url);
         await expect(page).toHaveURL(InventoryPageData.URL);
     });
 
-    test("TC_03.002 | Sort Products by Price Low to High", async ({}) => {
+    test("TC_03.002 | Sort Products by Price Low to High", async () => {
         await inventoryPage.selectSortDropdown(InventoryPageData.SELECT_SORT.lohi);
         await InventoryAssertions.validateProductCardsData(inventoryPage, InventoryPageData.getSortProduct(InventoryPageData.PRODUCTS, InventoryPageData.SELECT_SORT.lohi));
         await InventoryAssertions.validateAllProductCards(inventoryPage);
