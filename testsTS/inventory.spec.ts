@@ -75,7 +75,16 @@ test.describe("TC_03 | Menu Functionality / Product Catalog", () => {
         await InventoryAssertions.validateAllProductCards(inventoryPage);
     });
 
-    test("TC_03.003 | Sort Products by Name A to Z", async ({}) => {
+    test("TC_05.001 | Add Single Item to Cart", async ({}) => {
+        const randomProductPosition = Math.ceil(Math.random() * 6);
+        const button = await inventoryPage.clickAddToCart(randomProductPosition);
+        
+        await expect(button).toHaveText(InventoryPageData.BUTTON_TEXT.REMOVE);
+        await InventoryAssertions.validateAllProductButton(inventoryPage, [randomProductPosition]);
+        await expect(inventoryPage.cartBadge).toHaveText('1');
+    });
+
+    test("TC_03.003 | Sort Products by Name A to Z", async () => {
         await inventoryPage.selectSortDropdown(InventoryPageData.SELECT_SORT.az);
         await InventoryAssertions.validateProductCardsData(inventoryPage, InventoryPageData.getSortProduct(InventoryPageData.PRODUCTS, InventoryPageData.SELECT_SORT.az));
         await InventoryAssertions.validateAllProductCards(inventoryPage);

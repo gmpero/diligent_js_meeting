@@ -21,14 +21,14 @@ test.describe("TC_05 | Shopping Cart", () => {
     });
 
     test("TC_05.003.01 | Shopping Cart > Cart Page > Shopping Cart Page Access > URL Validation", async () => {
-        await inventoryPage.clickAddToCartByIndex();
+        await inventoryPage.clickAddToCart();
         cartPage = await inventoryPage.header.openCart();
 
         await expect(cartPage.page).toHaveURL(CartPageData.URL);
     });
 
     test("TC_05.003.02 | Shopping Cart > Cart Page > Shopping Cart Page Access > Title Validation", async () => {
-        await inventoryPage.clickAddToCartByIndex();
+        await inventoryPage.clickAddToCart();
         cartPage = await inventoryPage.header.openCart();
 
         await expect(cartPage.title).toBeVisible();
@@ -36,7 +36,7 @@ test.describe("TC_05 | Shopping Cart", () => {
     });
 
     test("TC_05.003.03 | Shopping Cart > Cart Page > Shopping Cart Page Access > Headers Validation", async () => {
-        await inventoryPage.clickAddToCartByIndex();
+        await inventoryPage.clickAddToCart();
         cartPage = await inventoryPage.header.openCart();
 
         await expect(cartPage.qtyHeader).toBeVisible();
@@ -47,7 +47,7 @@ test.describe("TC_05 | Shopping Cart", () => {
     });
 
     test("TC_05.003.04 | Shopping Cart > Cart Page > Shopping Cart Page Access > Buttons Validation", async () => {
-        await inventoryPage.clickAddToCartByIndex();
+        await inventoryPage.clickAddToCart();
         cartPage = await inventoryPage.header.openCart();
 
         await expect(cartPage.continueShoppingButton).toBeVisible();

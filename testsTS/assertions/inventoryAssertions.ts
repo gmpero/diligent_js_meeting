@@ -39,6 +39,16 @@ class InventoryAssertions {
             });
         }
     }
+
+    static async validateAllProductButton(inventoryPage: InventoryPage, addedItems: number[]) {
+        const allCards = await inventoryPage.productCards.all();
+        const result = allCards.filter((_, index) => !addedItems.includes(index + 1));
+
+        for (let i = 0; i < result.length; i++) {
+            const card = result[i];
+            await expect(inventoryPage.getButtonText(card)).toHaveText(InventoryPageData.BUTTON_TEXT.ADD);
+        }
+    }
 }
 
 export {InventoryAssertions};
