@@ -20,7 +20,7 @@ const InventoryPageData = {
             price: '$29.99',
             imageAlt: 'Sauce Labs Backpack',
             imageSrc: '/static/media/sauce-backpack-1200x1500.0a0b85a385945026062b.jpg',
-        }, 
+        },
         {
             id: 2,
             title: 'Sauce Labs Bike Light',
@@ -76,6 +76,7 @@ const InventoryPageData = {
     },
 
     SELECT_SORT: {
+        az: 'Name (A to Z)',
         lohi: 'Price (low to high)',
     },
 
@@ -87,6 +88,11 @@ const InventoryPageData = {
         const productsCopy = [...products];
 
         switch (typeSort) {
+            case this.SELECT_SORT.az:
+                return productsCopy.sort((a, b) =>
+                    a.title.localeCompare(b.title)
+                );
+
             case this.SELECT_SORT.lohi:
                 return productsCopy.sort((a, b) => 
                     parseFloat(a.price.slice(1)) - parseFloat(b.price.slice(1))
