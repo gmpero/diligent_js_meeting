@@ -97,7 +97,7 @@ test.describe("TC_01 | Authorization under different users", () => {
         await expect(loginPage.errorCloseButton).toBeVisible();
         await expect(page).toHaveURL("/");
     });
-    
+
     test("TC_01.003 | Locked Out User Access", async ({ page }) => {
         await loginPage.loginFail(
             UserData.locked_out_user.username,
@@ -185,6 +185,16 @@ test.describe("TC_01 | Authorization under different users", () => {
             UserData.error_user.password
         );
         await expect(page).toHaveURL(InventoryPageData.URL);
+    });
+
+    test("TC_01.013 | Password Field Security", async ({ page }) => {
+        await expect(page).toHaveURL("/");
+        await loginPage.fillPassword("password");
+        await expect(loginPage.passwordField).toHaveValue("password");
+        await expect(loginPage.passwordField).toHaveAttribute(
+            "type",
+            "password",
+        );
     });
 
     test("TC_01.014 | Direct URL Access Protection", async ({ page }) => {
