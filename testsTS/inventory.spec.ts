@@ -59,7 +59,7 @@ test.describe("TC_03 | Menu Functionality / Product Catalog", () => {
 
     test("TC_02.002 | About External Link Navigation", async ({page, context}) => {
         await inventoryPage.header.openBurgerMenu();
-        
+
         const [aboutPage] = await Promise.all([
             context.waitForEvent('page'),
             inventoryPage.header.openInNewTab(HeaderData.MENU.ABOUT.name),
@@ -82,6 +82,22 @@ test.describe("TC_03 | Menu Functionality / Product Catalog", () => {
         await expect(button).toHaveText(InventoryPageData.BUTTON_TEXT.REMOVE);
         await InventoryAssertions.validateAllProductButton(inventoryPage, [randomProductPosition]);
         await expect(inventoryPage.cartBadge).toHaveText('1');
+    });
+
+    test("TC_05.002 | Add Multiple Items to Cart", async ({ }) => {
+        const firstProduct = 1;
+        const secondProduct = 4;
+
+        await inventoryPage.clickAddToCart(firstProduct);
+        await expect(inventoryPage.cartBadge).toHaveText("1");
+
+        await inventoryPage.clickAddToCart(secondProduct);
+        await expect(inventoryPage.cartBadge).toHaveText("2");
+
+        const addedItems = [firstProduct, secondProduct];
+
+        await InventoryAssertions.validateAllProductButton(inventoryPage, addedItems);
+        expect(await inventoryPage.getRemoveButtonsCount()).toBe(addedItems.length);
     });
 
     test("TC_03.003 | Sort Products by Name A to Z", async () => {
