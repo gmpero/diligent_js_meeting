@@ -1,5 +1,6 @@
 import { Page, Locator } from '@playwright/test';
 import { Header } from './components/Header';
+import { InventoryPageData } from '../testData/inventoryPageData';
 
 // type Position = 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -58,6 +59,19 @@ class InventoryPage {
 		await this.select.selectOption({ label: option });
 	}  
 
+	async getRemoveButtonsCount() {
+		const cards = await this.productCards.all();
+		let count = 0;
+
+		for (let i = 0; i < cards.length; i++) {
+			const text = await this.getAddToCardButton(cards[i]).textContent();
+
+			if (text === InventoryPageData.BUTTON_TEXT.REMOVE) {
+				count++;
+			}
+		}
+		return count;
+	}
 }
 
 export { InventoryPage};
