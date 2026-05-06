@@ -57,9 +57,9 @@ test.describe("TC_03 | Menu Functionality / Product Catalog", () => {
         );
     });
 
-    test("TC_02.002 | About External Link Navigation", async ({page, context}) => {
+    test("TC_02.002 | About External Link Navigation", async ({ page, context }) => {
         await inventoryPage.header.openBurgerMenu();
-        
+
         const [aboutPage] = await Promise.all([
             context.waitForEvent('page'),
             inventoryPage.header.openInNewTab(HeaderData.MENU.ABOUT.name),
@@ -75,10 +75,20 @@ test.describe("TC_03 | Menu Functionality / Product Catalog", () => {
         await InventoryAssertions.validateAllProductCards(inventoryPage);
     });
 
-    test("TC_05.001 | Add Single Item to Cart", async ({}) => {
+    test("TC_04.002 | Product Detail Page Content Verification", async () => {
+        const inventoryDetailsPage = await inventoryPage.clickProductTitle();
+        await expect(inventoryDetailsPage.itemImage).toBeVisible();
+        await expect(inventoryDetailsPage.itemName).toBeVisible();
+        await expect(inventoryDetailsPage.itemDescription).toBeVisible();
+        await expect(inventoryDetailsPage.itemPrice).toBeVisible();
+        await expect(inventoryDetailsPage.addToCartButton).toBeEnabled();
+        await expect(inventoryDetailsPage.secondaryHeader.backButton).toBeEnabled();
+    });
+
+    test("TC_05.001 | Add Single Item to Cart", async ({ }) => {
         const randomProductPosition = Math.ceil(Math.random() * 6);
         const button = await inventoryPage.clickAddToCart(randomProductPosition);
-        
+
         await expect(button).toHaveText(InventoryPageData.BUTTON_TEXT.REMOVE);
         await InventoryAssertions.validateAllProductButton(inventoryPage, [randomProductPosition]);
         await expect(inventoryPage.cartBadge).toHaveText('1');
